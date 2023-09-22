@@ -41,7 +41,7 @@ function getArticleById(int $id):array
     $articleList =getArticles();
     $curentArticle = [];
     if (array_key_exists($id, $articleList)) {
-        $curentLrticle = $articleList[$id];
+        $curentArticle = $articleList[$id];
     }
     return $curentArticle;
 }
@@ -61,4 +61,29 @@ function getArticleList(): string
             . '">'. $article['title']. '</a></li>';
     }
     return $link;
+}
+
+function content():string
+{
+    if (isset($_GET['id'])){
+        $id = (int) $_GET['id'];
+        $article = getArticleById($id);
+    }else{
+        $article = '';
+    }
+
+    if (empty($article)){
+        $content = '<h2> Выберите статью для просмотра</h2>';
+    }else{
+        $content = '<div class="card">
+  <img src="'. $article['image'].'" class="card-img-top">
+  <div class="card-body">
+    <h5 class="card-title">'. $article['title'].'</h5>
+    <p class="card-text">
+        '. $article['content'].'
+    </p>
+  </div>
+</div>';
+    }
+    return $content;
 }
