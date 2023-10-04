@@ -250,7 +250,37 @@ function makeArticleForm(string $action, array $article =[], string $method = 'g
     return $form;
 }
 
+function pageTitleWrapper(string $page_title):string
+{
+    return '<div class="pagetitle">
+        <h1>Form Editors</h1>
+        <nav>
+            <ol class="breadcrumb">// TODO : breadcrumb in function
+                <li class="breadcrumb-item"><a href="admin.php">Home</a></li>
+                <li class="breadcrumb-item">Статьи</li>
+                <li class="breadcrumb-item active">'.$page_title.'</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->';
+}
+
+function pageWrapper(string $title, string $content):string
+{
+    $page =  '<main id="main" class="main">';
+    $page .= pageTitleWrapper($title);
+    $page .= '<section class="section"><div class="row"><div class="col-lg-12">';
+    $page .= $content ;
+    $page .= '</div></div></section></main>';
+    return $page;
+}
 function showArticleForm()
 {
     echo makeArticleForm('article-edit',getArticleById(2));
+}
+
+function getLastArticleId():int
+{
+    $articles = getArticles();
+    $lastId =(int) end($articles)['id'];
+    return $lastId;
 }
