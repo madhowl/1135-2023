@@ -7,4 +7,3 @@ ini_set('display_errors', 'on');
 include_once 'function.php';
 
 dd($_REQUEST);
-dd($_REQUEST['primer']);
