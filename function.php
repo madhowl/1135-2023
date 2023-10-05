@@ -48,48 +48,6 @@ function getArticleById(int $id): array
     return $curentArticle;
 }
 
-/**
- * функция генерирует список <li> из Json
- * и формирует ссылки вида URI index.php?id=1
- *
- * @return string
- */
-function getArticleList(): string
-{
-    $articles = getArticles();
-    $link = '';
-    foreach ($articles as $article) {
-        $link .= '<li class="nav-item"><a class="nav-link" href="index.php?id=' . $article['id']
-            . '">' . $article['title'] . '</a></li>';
-    }
-    return $link;
-}
-
-function content(): string
-{
-    if (isset($_GET['id'])) {
-        $id = (int)$_GET['id'];
-        $article = getArticleById($id);
-    } else {
-        $article = '';
-    }
-
-    if (empty($article)) {
-        $content = '<h2> Выберите статью для просмотра</h2>';
-    } else {
-        $content = '<div class="card">
-  <img src="' . $article['image'] . '" class="card-img-top">
-  <div class="card-body">
-    <h5 class="card-title">' . $article['title'] . '</h5>
-    <p class="card-text">
-        ' . $article['content'] . '
-    </p>
-  </div>
-</div>';
-    }
-    return $content;
-}
-
 function main(): string
 {
     if (isset($_GET['id'])) {
@@ -148,7 +106,33 @@ function blogEntryWrapper(array $article, $single = false): string
 
 // admin function
 
-function listOfWrappedArticles()
+function login()
+{
+    if (!isset($_POST['btnLogin'])) {
+        //echo showForm();
+        include 'template/backend/partials/login.php';
+    } else {
+        if (checkLogin($_POST['username'], $_POST['password'])) {
+            $_SESSION['user'] = 'admin';
+            //echo 'Вы залогинелись';
+            goUrl('admin.php');
+        }else{
+            goUrl('admin.php');
+        };
+
+    }
+}
+
+function checkLogin(string $login, string $password): bool
+{
+    if ($login == 'admin' and $password == '123') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function listOfWrappedArticles():string
 {
     $articles = getArticles();
     $list = '';
@@ -159,7 +143,7 @@ function listOfWrappedArticles()
     return $list;
 }
 
-function listArticleWrapper(array $article, $single = false): string
+function listArticleWrapper(array $article): string
 {
     $wrapped_list = '
         <tr>
@@ -193,7 +177,7 @@ function listArticleWrapper(array $article, $single = false): string
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отменить</button>
-                      <a  href="admin.php?action=article_delete&id=' . $article['id'] . '"class="btn btn-primary">Удалить</a>
+                      <a  href="admin.php?action=article-delete&id=' . $article['id'] . '" class="btn btn-primary">Удалить</a>
                     </div>
                   </div>
                 </div>
@@ -273,14 +257,147 @@ function pageWrapper(string $title, string $content):string
     $page .= '</div></div></section></main>';
     return $page;
 }
-function showArticleForm()
-{
-    echo makeArticleForm('article-edit',getArticleById(2));
-}
 
 function getLastArticleId():int
 {
     $articles = getArticles();
     $lastId =(int) end($articles)['id'];
     return $lastId;
+}
+
+function articleCreate() : bool{
+    $articleFields = checkFields( $_POST, articleFields ());
+    $articles = getArticles();
+    $lastId = end($articles)['id'];
+    $id = $lastId + 1;
+    $articles[$id] = [
+        'id' => $id,
+        'title' => $articleFields['title'],
+        'image' => $articleFields['image'],
+        'content' => $articleFields['content']
+    ];
+    saveArticles($articles);
+    return true;
+}
+
+function articleDelete(int $id) : bool{
+    $articles = getArticles();
+    if(isset($articles[$id])){
+        unset($articles[$id]);
+        saveArticles($articles);
+        return true;
+    }
+    return false;
+}
+
+function saveArticles(array $articles) : bool{
+    file_put_contents('db/articles.json', json_encode($articles));
+    return true;
+}
+
+function articleFields():array
+{
+  return [
+      'id' ,
+      'title' ,
+      'image' ,
+      'content'
+  ];
+}
+
+function checkFields(array $target, array $fields, bool $html=true):array
+{
+    $checkedFields = array();
+    foreach ($fields as $name){
+        if(isset($target[$name]) && $html == false) {
+            $checkedFields[$name] = trim($target[$name]);
+        }elseif (isset($target[$name]) && $html == true) {
+            $checkedFields[$name] = htmlspecialchars(string: trim($target[$name]));
+        }
+    }
+    return $checkedFields;
+
+}
+
+function articleUpdate()
+{
+    $articleItem = checkFields( $_POST, articleFields ());
+    $articles = getArticles();
+    if(isset($articles[$articleItem['id']])) {
+        $articles[$articleItem['id']] = [
+            'id' => $articleItem['id'],
+            'title' => $articleItem['title'],
+            'image' => $articleItem['image'],
+            'content' => $articleItem['content']
+        ];
+        saveArticles($articles);
+        return true;
+    }else{
+        return false;
+    }
+
+
+}
+
+function dashboard()
+{
+    if (isset($_SESSION['user']) and $_SESSION['user'] = 'admin') {
+        include 'template/backend/partials/header.php';
+        include 'template/backend/partials/sidebar.php';
+        $action = '';
+        if (isset($_REQUEST['action'])) {
+            $action = $_REQUEST['action'];
+        }
+        switch ($action ) {
+            case 'article-list':
+                include 'template/backend/pages/article-list.php';
+                break;
+            case 'article-add':
+                $content = makeArticleForm('article-create',[],'post');
+                $title = 'Create';
+                echo pageWrapper($title,$content);
+                break;
+            case 'article-create':
+                if (articleCreate ()) {
+                    goUrl('admin.php?action=article-list');
+                }else{
+                    $title = 'Error!!!';
+                    $content = 'Что-то пошло не по плану';
+                    echo pageWrapper($title,$content);
+                };
+                break;
+            case 'article-edit':
+                $id =(int) $_GET['id'];
+                $article = getArticleById($id);
+                $content = makeArticleForm('article-update',$article,'post');
+                $title = 'Edit';
+                echo pageWrapper($title,$content);
+                break;
+            case 'article-update':
+                if (articleUpdate ()) {
+                    goUrl('admin.php?action=article-list');
+                }else{
+                    $title = 'Error!!!';
+                    $content = 'Что-то пошло не по плану';
+                    echo pageWrapper($title,$content);
+                };
+                break;
+            case 'article-delete':
+                $id =(int) $_GET['id'];
+                articleDelete ($id);
+                goUrl('admin.php?action=article-list');
+                break;
+            case 'logout':
+                session_destroy();
+                goUrl('admin.php');
+                break;
+            default:
+                /// ??????????????????????????
+                include 'template/backend/partials/dashboard.php';
+        }
+        //include 'template/backend/partials/dashboard.php';
+
+    } else {
+        login();
+    }
 }
