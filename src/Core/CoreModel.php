@@ -4,10 +4,13 @@
 namespace App\Core;
 
 
+use App\Model\ModelInterface;
 use Opis\Database\Database;
 
-abstract class CoreModel implements \App\Model\ModelInterface
+abstract class CoreModel implements ModelInterface
 {
+    use Pagination;
+
     protected Database $db;
     protected string $table;
     protected string $primaryKey='id';
@@ -38,8 +41,7 @@ abstract class CoreModel implements \App\Model\ModelInterface
         $this->table = $table;
     }
 
-
-    public function all(): mixed
+    public function all(): array
     {
         return $this->db->from($this->table)
             ->select()
@@ -59,5 +61,14 @@ abstract class CoreModel implements \App\Model\ModelInterface
     public function count(): int
     {
         return $this->db->from($this->table)->count();
+    }
+    public function paginate()
+    {
+        return $this->createLinks();
+    }
+
+    public function getPagesCount(int $itemsPerPage = 5): int
+    {
+        return ceil( $this->count() / $itemsPerPage);
     }
 }

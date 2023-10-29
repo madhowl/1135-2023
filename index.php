@@ -16,25 +16,15 @@ use Psr\Container\ContainerInterface;
 use function DI\factory;
 
 $containerBuilder = new \DI\ContainerBuilder();
-$containerBuilder->useAutowiring(true);
+$containerBuilder->useAutowiring(false);
 $containerBuilder->useAttributes(false);
-//$containerBuilder->useAnnotations(false); //version PHP-DI < 7
 $containerBuilder->addDefinitions('config/definitions.php');
-
-
 $container = $containerBuilder->build();
 
-//$app = $container->get (App\Controller::class);
-//var_dump ($app->index());
-// Define routes
-//$router->get ('/', 'App\Controller@index');
 
-
-//$container = require __DIR__ . '/../app/bootstrap.php';
-//$container = require ('config/definitions.php');
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
-    $r->addRoute('GET', '/', ['App\Controller','index']);
-    $r->addRoute('GET', '/article/{id}', ['App\Controller', 'show']);
+    $r->addRoute('GET', '/', ['App\Controller\FrontController','showAllArticles']);
+    $r->addRoute('GET', '/article/{id}', ['App\Controller\FrontController', 'showArticleById']);
 });
 
 // Fetch method and URI from somewhere
