@@ -24,6 +24,7 @@ $container = $containerBuilder->build();
 
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
     $r->addRoute('GET', '/', ['App\Controller\FrontController','showAllArticles']);
+    $r->addRoute('GET', '/page/{page:\d+}', ['App\Controller\FrontController','showArticlesPerPage']);
     $r->addRoute('GET', '/article/{id}', ['App\Controller\FrontController', 'showArticleById']);
 });
 

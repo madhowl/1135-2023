@@ -23,6 +23,11 @@ class FrontController
         $this->articleService->index();
     }
 
+    public function showArticlesPerPage($page)
+    {
+        $this->articleService->index($page);
+    }
+
     public function showArticleById(int $id)
     {
         $this->articleService->show($id);

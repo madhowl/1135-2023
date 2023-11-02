@@ -8,7 +8,7 @@ use Opis\Database\Connection;
 return [
     Opis\Database\Connection::class => \DI\create(Opis\Database\Connection::class)
     ->constructor(
-        'mysql:host=localhost;dbname=cms-1135',
+        'mysql:host=localhost;dbname=1135-cms',
         'admin',
         'admin'
     ),

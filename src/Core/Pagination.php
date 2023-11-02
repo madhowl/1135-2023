@@ -10,28 +10,28 @@ trait Pagination
     protected $totalRows = '';
     protected $perPage = 10;
     protected $numLinks = 2;
-    protected $currentPage = 0;
+    protected $currentPage = 1;
     protected $firstLink = 'Первая';
     protected $nextLink = 'Следующая &raquo;';
     protected $prevLink = '&laquo; Предыдущая';
     protected $lastLink = 'Последняя';
-    protected $fullTagOpen = '<div class="pagination">';
-    protected $fullTagClose = '</div>';
-    protected $firstTagOpen = '';
-    protected $firstTagClose = '&nbsp;';
-    protected $lastTagOpen = '&nbsp;';
-    protected $lastTagClose = '';
-    protected $curTagOpen = '&nbsp;<b>';
-    protected $curTagClose = '</b>';
-    protected $nextTagOpen = '&nbsp;';
-    protected $nextTagClose = '&nbsp;';
-    protected $prevTagOpen = '&nbsp;';
-    protected $prevTagClose = '';
-    protected $numTagOpen = '&nbsp;';
-    protected $numTagClose = '';
-    protected $showCount = true;
-    protected $currentOffset = 0;
-    protected $queryStringSegment = 'page';
+    protected $fullTagOpen = '';
+    protected $fullTagClose = '';
+    protected $firstTagOpen = '<li>';
+    protected $firstTagClose = '</li>';
+    protected $lastTagOpen = '<li>';
+    protected $lastTagClose = '</li></ul>';
+    protected $curTagOpen = '<li class="active">';
+    protected $curTagClose = '</li>';
+    protected $nextTagOpen = '<li>';
+    protected $nextTagClose = '</li>';
+    protected $prevTagOpen = '<li>';
+    protected $prevTagClose = '</li>';
+    protected $numTagOpen = '<li>';
+    protected $numTagClose = '</li>';
+    protected $showCount = false;
+    public $currentOffset = 0;
+    protected $queryStringSegment = '';
 
 
     function initialize($params = array())
@@ -67,11 +67,12 @@ trait Pagination
         }
 
         // Определяем строку запроса
-        $query_string_sep = (strpos($this->baseURL, '?') === FALSE) ? '?page=' : '&amp;page=';
+        //$query_string_sep = (strpos($this->baseURL, '?') === FALSE) ? '?page=' : '&amp;page=';
+        $query_string_sep = '';
         $this->baseURL = $this->baseURL . $query_string_sep;
 
         // Определяем текущую страницу
-        $this->currentPage = $_GET[$this->queryStringSegment];
+        //$this->currentPage = $_GET[$this->queryStringSegment];
 
         if (!is_numeric($this->currentPage) || $this->currentPage == 0) {
             $this->currentPage = 1;
@@ -82,10 +83,10 @@ trait Pagination
 
         // Отображаем сообщение о ссылках на другие страницы
         if ($this->showCount) {
-            $currentOffset = ($this->currentPage > 1) ? ($this->currentPage - 1) * $this->perPage : $this->currentPage;
-            $info = 'Показаны элементы с ' . $currentOffset . ' по ';
+            $this->currentOffset = ($this->currentPage > 1) ? ($this->currentPage - 1) * $this->perPage : $this->currentPage;
+            $info = 'Показаны элементы с ' . $this->currentOffset . ' по ';
 
-            if (($currentOffset + $this->perPage) < $this->totalRows)
+            if (($this->currentOffset + $this->perPage) < $this->totalRows)
                 $info .= $this->currentPage * $this->perPage;
             else
                 $info .= $this->totalRows;
@@ -111,7 +112,7 @@ trait Pagination
         // Выводим ссылку на первую страницу
         if ($this->currentPage > $this->numLinks) {
             $firstPageURL = str_replace($query_string_sep, '', $this->baseURL);
-            $output .= $this->firstTagOpen . '<a href="' . $firstPageURL . '">' . $this->firstLink . '</a>' . $this->firstTagClose;
+            $output .= $this->firstTagOpen . '<a href="' . $firstPageURL . '1">' . $this->firstLink . '</a>' . $this->firstTagClose;
         }
         // Выводим ссылку на предыдущую страницу
         if ($this->currentPage != 1) {
@@ -124,7 +125,7 @@ trait Pagination
             $i = $loop;
             if ($i >= 1) {
                 if ($this->currentPage == $loop) {
-                    $output .= $this->curTagOpen . $loop . $this->curTagClose;
+                    $output .= $this->curTagOpen . '<a href="' . $this->baseURL . $i . '">' . $loop . '</a>' . $this->curTagClose;
                 } else {
                     $output .= $this->numTagOpen . '<a href="' . $this->baseURL . $i . '">' . $loop . '</a>' . $this->numTagClose;
                 }

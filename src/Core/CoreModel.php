@@ -9,7 +9,7 @@ use Opis\Database\Database;
 
 abstract class CoreModel implements ModelInterface
 {
-    use Pagination;
+
 
     protected Database $db;
     protected string $table;
@@ -62,13 +62,5 @@ abstract class CoreModel implements ModelInterface
     {
         return $this->db->from($this->table)->count();
     }
-    public function paginate()
-    {
-        return $this->createLinks();
-    }
 
-    public function getPagesCount(int $itemsPerPage = 5): int
-    {
-        return ceil( $this->count() / $itemsPerPage);
-    }
 }

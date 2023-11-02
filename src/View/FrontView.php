@@ -19,9 +19,12 @@ public Blade $view;
         $this->view = $view;
     }
 
-    public function showIndexPage(array $articles)
+    public function showIndexPage(array $articles,$pagination =0)
     {
-        return $this->view->render('blog-single', ['articles' => $articles]);
+        return $this->view->render('blog-single', [
+            'articles' => $articles,
+            'pagination' =>$pagination
+        ]);
     }
     public function showSingleArticlePage(array $articles)
     {

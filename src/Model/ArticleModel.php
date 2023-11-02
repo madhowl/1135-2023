@@ -20,4 +20,17 @@ class ArticleModel extends CoreModel implements ModelInterface
         parent::__construct( $db);
         $this->setTable($table);
     }
+
+    public function paginate(int $limit, int $offset)
+    {
+        return $result = $this->db->from($this->table)
+            //->orderBy('name')
+            ->limit($limit)
+            ->offset($offset)
+            ->select()
+            ->fetchAssoc()
+            ->all();
+
+
+    }
 }
