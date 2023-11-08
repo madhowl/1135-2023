@@ -34,15 +34,15 @@ class ArticleService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function index($page =0)
+    public function index($page = 1)
     {
         $count = $this->model->count();
         $this->totalRows = $count;
-        //$this->currentPage =$page;
+        $this->currentPage =$page;
         $offset = ($page-1)* $this->perPage;
         $articles = $this->model->paginate($this->perPage, $offset);
         $pagination = $this->createLinks();
-        echo $this->view->showIndexPage($articles,$pagination);
+        echo $this->view->showIndexPage($articles, $pagination);
     }
 
     /**

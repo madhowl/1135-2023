@@ -21,14 +21,14 @@ public Blade $view;
 
     public function showIndexPage(array $articles,$pagination =0)
     {
-        return $this->view->render('blog-single', [
+        return $this->view->render('blog', [
             'articles' => $articles,
             'pagination' =>$pagination
         ]);
     }
-    public function showSingleArticlePage(array $articles)
+    public function showSingleArticlePage(array $article)
     {
-        return $this->view->render('blog-single', ['articles' => $articles]);
+        return $this->view->render('blog-single', ['article' => $article]);
     }
 
 

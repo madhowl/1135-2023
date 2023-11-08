@@ -7,13 +7,15 @@ use FastRoute\RouteCollector;
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
-//use Tracy\Debugger;
-//Debugger::enable();
+
 
 use Opis\Database\Database;
 use Opis\Database\Connection;
 use Psr\Container\ContainerInterface;
 use function DI\factory;
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 $containerBuilder = new \DI\ContainerBuilder();
 $containerBuilder->useAutowiring(false);

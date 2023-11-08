@@ -1,35 +1,54 @@
 <?php
 
 use function DI\create;
+use function DI\get;
+use Jenssegers\Blade\Blade;
 use Opis\Database\Connection;
+use Opis\Database\Database;
+use App\Model\ArticleModel;
+use App\Controller\FrontController;
+use App\View\FrontView;
+use App\Service\ArticleService;
 
 
 
 return [
-    Opis\Database\Connection::class => \DI\create(Opis\Database\Connection::class)
+    'Connection'=> create(Connection::class)
     ->constructor(
-        'mysql:host=localhost;dbname=1135-cms',
-        'admin',
-        'admin'
+        $_ENV['DB_DSN'],
+        $_ENV['DB_USERNAME'],
+        $_ENV['DB_PASSWORD']
     ),
-    Opis\Database\Database::class => \DI\create(Opis\Database\Database::class)
+    'Database' => create(Database::class)
         ->constructor(
-            DI\get(Opis\Database\Connection::class)
+            get('Connection')
     ),
-    'ArticleModel' => \DI\create(\App\Model\ArticleModel::class)
+    'ArticleModel' => create(ArticleModel::class)
         ->constructor(
-            DI\get(Opis\Database\Database::class),
+            get('Database'),
             'articles'
         ),
-    'Blade'=>create(Jenssegers\Blade\Blade::class)
-    ->constructor('template/frontend' , 'cache'),
-    App\Controller\FrontController::class => \DI\create(App\Controller\FrontController::class)
-        ->constructor(DI\get('ArticleService')),
-    'FrontView' => \DI\create(\App\View\FrontView::class)
-        ->constructor(DI\get('Blade')),
-    'ArticleService' => \DI\create(\App\Service\ArticleService::class)
+    'Blade'=>create(Blade::class)
         ->constructor(
-            DI\get('ArticleModel')
-            , DI\get('FrontView')
+            'template/frontend',
+            'cache'
+        ),
+    'BackBlade'=>create(Blade::class)
+        ->constructor(
+            'template/backend',
+            'cache'
+        ),
+    FrontController::class => create(FrontController::class)
+        ->constructor(
+            get('ArticleService')
+        ),
+    'FrontView' => create(FrontView::class)
+        ->constructor(
+            get('Blade')
+        ),
+    'ArticleService' => create(ArticleService::class)
+        ->constructor(
+            get('ArticleModel'),
+            get('FrontView')
         ),
 ];
