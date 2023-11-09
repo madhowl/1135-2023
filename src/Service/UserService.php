@@ -10,9 +10,9 @@ use App\Model\UserModel;
 
 class UserService implements ServiceInterface
 {
-    private UserModelModel $model;
+    private UserModel $model;
 
-    public function __construct(UserModelModel $model)
+    public function __construct(UserModel $model)
     {
         $this->model = $model;
     }
@@ -71,6 +71,7 @@ class UserService implements ServiceInterface
     {
         // TODO: Implement destroy() method.
     }
+
 
     public function UserSignIn(ServerRequestInterface $request): ResponseInterface
     {

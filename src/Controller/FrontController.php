@@ -36,9 +36,16 @@ class FrontController
         echo $this->frontView->showIndexPage($page['articles'], $page['pagination']);
     }
 
-    public function showArticleById(int $id)
+    public function showArticleById($id)
     {
+        $id =(int)$id;
         $article = $this->articleService->show($id);
         echo $this->frontView->showSingleArticlePage($article);
+    }
+
+    public function showRegisterForm()
+    {
+        echo $this->frontView->showRegisterForm();
+
     }
 }

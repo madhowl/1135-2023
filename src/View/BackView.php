@@ -21,5 +21,20 @@ class BackView
         $this->view = $view;
     }
 
+    public function index($title): string
+    {
+        return $this->view->render('dashboard',['title'=>$title]);
+    }
+
+    public function showLoginForm(): string
+    {
+        return $this->view->render('login');
+    }
+
+    public function error404(): string
+    {
+        return $this->view->render('pages-error-404');
+    }
+
 
 }

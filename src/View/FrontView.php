@@ -19,7 +19,7 @@ class FrontView
         $this->view = $view;
     }
 
-    public function showIndexPage(array $articles,$pagination =0)
+    public function showIndexPage(array $articles,$pagination =0): string
     {
         return $this->view->render('blog', [
             'articles' => $articles,
@@ -27,9 +27,14 @@ class FrontView
         ]);
     }
 
-    public function showSingleArticlePage(array $article)
+    public function showSingleArticlePage(array $article): string
     {
         return $this->view->render('blog-single', ['article' => $article]);
+    }
+
+    public function showRegisterForm(): string
+    {
+        return $this->view->render('register');
     }
 
 

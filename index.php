@@ -1,18 +1,14 @@
 <?php
 declare(strict_types=1);
-// Require composer autoloader
+session_start();
 require __DIR__ . '/vendor/autoload.php';
+
 use FastRoute\RouteCollector;
 
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
-
-use Opis\Database\Database;
-use Opis\Database\Connection;
-use Psr\Container\ContainerInterface;
-use function DI\factory;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -23,14 +19,8 @@ $containerBuilder->useAttributes(false);
 $containerBuilder->addDefinitions('bootstrap/di.php');
 $container = $containerBuilder->build();
 
-//dd(include 'bootstrap/di.php');
-//dd($container->get('Connection'));
 
-$dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
-    $r->addRoute('GET', '/', ['App\Controller\FrontController','showAllArticles']);
-    $r->addRoute('GET', '/page/{page:\d+}', ['App\Controller\FrontController','showArticlesPerPage']);
-    $r->addRoute('GET', '/article/{id}', ['App\Controller\FrontController', 'showArticleById']);
-});
+$dispatcher = include_once 'bootstrap/routs.php';
 
 // Fetch method and URI from somewhere
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -42,11 +32,11 @@ if (false !== $pos = strpos($uri, '?')) {
 }
 $uri = rawurldecode($uri);
 
-//$routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 $route = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 switch ($route[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
-        // ... 404 Not Found
+        $error = $container->get(\App\Controller\BackController::class);
+        $error->showError404Page();
         break;
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
         $allowedMethods = $route[1];
