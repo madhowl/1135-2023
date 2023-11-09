@@ -8,7 +8,7 @@ use Jenssegers\Blade\Blade;
 
 class FrontView
 {
-public Blade $view;
+    public Blade $view;
 
     /**
      * FrontView constructor.
@@ -26,6 +26,7 @@ public Blade $view;
             'pagination' =>$pagination
         ]);
     }
+
     public function showSingleArticlePage(array $article)
     {
         return $this->view->render('blog-single', ['article' => $article]);

@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Core\Pagination;
 use App\Model\ArticleModel;
-use App\View\FrontView;
+
 
 /**
  * Class ArticleService
@@ -14,35 +14,33 @@ use App\View\FrontView;
  */
 class ArticleService implements ServiceInterface
 {
- use Pagination;
+    use Pagination;
 
     private ArticleModel $model;
-    public FrontView $view;
 
     /**
      * ArticleService constructor.
      * @param ArticleModel $model
-     * @param FrontView $view
      */
-    public function __construct(ArticleModel $model, FrontView $view)
+    public function __construct(ArticleModel $model)
     {
         $this->model = $model;
-        $this->view = $view;
     }
 
 
     /**
      * @inheritDoc
      */
-    public function index($page = 1)
+    public function index($curentPage = 1): array
     {
+        $page = [];
         $count = $this->model->count();
         $this->totalRows = $count;
-        $this->currentPage =$page;
-        $offset = ($page-1)* $this->perPage;
-        $articles = $this->model->paginate($this->perPage, $offset);
-        $pagination = $this->createLinks();
-        echo $this->view->showIndexPage($articles, $pagination);
+        $this->currentPage = $curentPage;
+        $offset = ($curentPage - 1) * $this->perPage;
+        $page['articles'] = $this->model->paginate($this->perPage, $offset);
+        $page['pagination'] = $this->createLinks();
+        return $page;
     }
 
     /**
@@ -64,10 +62,9 @@ class ArticleService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function show(int $id)
+    public function show(int $id): array
     {
-        $article = $this->model->find($id);
-        echo $this->view->showSingleArticlePage($article);
+        return $this->model->find($id);
     }
 
     /**
