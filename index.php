@@ -20,9 +20,11 @@ $dotenv->load();
 $containerBuilder = new \DI\ContainerBuilder();
 $containerBuilder->useAutowiring(false);
 $containerBuilder->useAttributes(false);
-$containerBuilder->addDefinitions('config/definitions.php');
+$containerBuilder->addDefinitions('bootstrap/di.php');
 $container = $containerBuilder->build();
 
+//dd(include 'bootstrap/di.php');
+//dd($container->get('Connection'));
 
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
     $r->addRoute('GET', '/', ['App\Controller\FrontController','showAllArticles']);

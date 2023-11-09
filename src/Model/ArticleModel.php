@@ -15,10 +15,10 @@ class ArticleModel extends CoreModel implements ModelInterface
     /**
      * ArticleModel constructor.
      */
-    public function __construct(Database $db, string $table)
+    public function __construct(Database $db)
     {
         parent::__construct( $db);
-        $this->setTable($table);
+        $this->setTable('articles');
     }
 
     public function paginate(int $limit, int $offset)
