@@ -11,8 +11,8 @@ abstract class CoreModel implements ModelInterface
 {
 
 
-    protected Database $db;
-    protected string $table;
+    public Database $db;
+    public string $table;
     protected string $primaryKey='id';
 
     /**
@@ -41,6 +41,14 @@ abstract class CoreModel implements ModelInterface
         $this->table = $table;
     }
 
+    /**
+     * @return string
+     */
+    public function getTable(): string
+    {
+        return $this->table;
+    }
+
     public function all(): array
     {
         return $this->db->from($this->table)
@@ -61,6 +69,12 @@ abstract class CoreModel implements ModelInterface
     public function count(): int
     {
         return $this->db->from($this->table)->count();
+    }
+
+    public function insert(array $properties)
+    {
+        $result = $this->db->insert($properties)
+            ->into($this->table);
     }
 
 }

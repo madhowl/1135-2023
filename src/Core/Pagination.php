@@ -6,15 +6,16 @@ namespace App\Core;
 
 trait Pagination
 {
-    protected $baseURL = '/page/';
+    public $baseURL = '/page/';
     protected $totalRows = '';
     protected $perPage = 10;
     protected $numLinks = 2;
     protected $currentPage = 1;
-    protected $firstLink = 'Первая';
-    protected $nextLink = 'Следующая &raquo;';
-    protected $prevLink = '&laquo; Предыдущая';
-    protected $lastLink = 'Последняя';
+    public $firstLink = 'Первая';
+    public $nextLink = 'Следующая &raquo;';
+    public $prevLink = '&laquo; Предыдущая';
+    public $lastLink = 'Последняя';
+    public $aTagClass = 'class=""';
     protected $fullTagOpen = '';
     protected $fullTagClose = '';
     protected $firstTagOpen = '<li>';
@@ -34,8 +35,9 @@ trait Pagination
     protected $queryStringSegment = '';
 
 
-    function initialize($params = array())
+    public function initialize($params = array())
     {
+
         if (count($params) > 0) {
             foreach ($params as $key => $val) {
                 if (isset($this->$key)) {
@@ -48,7 +50,7 @@ trait Pagination
     /**
      * Генерируем ссылки на страницы
      */
-    function createLinks()
+    public function createLinks()
     {
         // Если общее количество записей 0, не продолжать
         if ($this->totalRows == 0 || $this->perPage == 0) {
@@ -112,34 +114,34 @@ trait Pagination
         // Выводим ссылку на первую страницу
         if ($this->currentPage > $this->numLinks) {
             $firstPageURL = str_replace($query_string_sep, '', $this->baseURL);
-            $output .= $this->firstTagOpen . '<a href="' . $firstPageURL . '1">' . $this->firstLink . '</a>' . $this->firstTagClose;
+            $output .= $this->firstTagOpen . '<a '. $this->aTagClass . ' href="' . $firstPageURL . '1">' . $this->firstLink . '</a>' . $this->firstTagClose;
         }
         // Выводим ссылку на предыдущую страницу
         if ($this->currentPage != 1) {
             $i = ($uriPageNum - 1);
             if ($i == 0) $i = '';
-            $output .= $this->prevTagOpen . '<a href="' . $this->baseURL . $i . '">' . $this->prevLink . '</a>' . $this->prevTagClose;
+            $output .= $this->prevTagOpen . '<a '. $this->aTagClass . ' href="' . $this->baseURL . $i . '">' . $this->prevLink . '</a>' . $this->prevTagClose;
         }
         // Выводим цифровые ссылки
         for ($loop = $start - 1; $loop <= $end; $loop++) {
             $i = $loop;
             if ($i >= 1) {
                 if ($this->currentPage == $loop) {
-                    $output .= $this->curTagOpen . '<a href="' . $this->baseURL . $i . '">' . $loop . '</a>' . $this->curTagClose;
+                    $output .= $this->curTagOpen . '<a '. $this->aTagClass . ' href="' . $this->baseURL . $i . '">' . $loop . '</a>' . $this->curTagClose;
                 } else {
-                    $output .= $this->numTagOpen . '<a href="' . $this->baseURL . $i . '">' . $loop . '</a>' . $this->numTagClose;
+                    $output .= $this->numTagOpen . '<a '. $this->aTagClass . ' href="' . $this->baseURL . $i . '">' . $loop . '</a>' . $this->numTagClose;
                 }
             }
         }
         // Выводим ссылку на следующую страницу
         if ($this->currentPage < $numPages) {
             $i = ($this->currentPage + 1);
-            $output .= $this->nextTagOpen . '<a href="' . $this->baseURL . $i . '">' . $this->nextLink . '</a>' . $this->nextTagClose;
+            $output .= $this->nextTagOpen . '<a '. $this->aTagClass . ' href="' . $this->baseURL . $i . '">' . $this->nextLink . '</a>' . $this->nextTagClose;
         }
         // Выводим ссылку на последнюю страницу
         if (($this->currentPage + $this->numLinks) < $numPages) {
             $i = $numPages;
-            $output .= $this->lastTagOpen . '<a href="' . $this->baseURL . $i . '">' . $this->lastLink . '</a>' . $this->lastTagClose;
+            $output .= $this->lastTagOpen . '<a '. $this->aTagClass . ' href="' . $this->baseURL . $i . '">' . $this->lastLink . '</a>' . $this->lastTagClose;
         }
         // Удаляем двойные косые
         $output = preg_replace("#([^:])//+#", "\1/", $output);

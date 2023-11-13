@@ -419,7 +419,7 @@ use Auth;
     }
 
     //  --------- start Articles CRUD ---------
-    public function showArticlesList(ServerRequestInterface $request, array $arg=['pageno' => 1]): ResponseInterface
+    public function showArticlesList( array $arg=['pageno' => 1])
     {
         $pageno = $arg['pageno'];
         $size_page = 5;
@@ -432,8 +432,8 @@ use Auth;
         $categories = $this->getAll('categories');
         $user = $this->getCurentUser();
         $message = $this->getMessage();
-        $html = $this->View->showArticlesList($articles,$categories, $message, $user);
-        return $this->responseWrapper($html);
+        return $this->View->showArticlesList($articles,$categories, $message, $user);
+
     }
 
     public function showAddArticleForm(ServerRequestInterface $request): ResponseInterface

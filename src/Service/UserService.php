@@ -27,7 +27,7 @@ class UserService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function create()
+    public function create($properties)
     {
         // TODO: Implement create() method.
     }

@@ -15,6 +15,7 @@ use App\View\BackView;
 class BackController
 {
     use Auth;
+
     private ArticleService $articleService;
     private UserService $userService;
     private BackView $backView;
@@ -27,15 +28,42 @@ class BackController
         ArticleService $articleService,
         UserService $userService,
         BackView $backView
-    )
-    {
+    ) {
         $this->articleService = $articleService;
         $this->userService = $userService;
         $this->backView = $backView;
-        if (!$this->checkAuth()){
+        if (!$this->checkAuth()) {
             $this->auth();
             exit;
         }
+    }
+
+    public function setPaginationParam()
+    {
+        $params = [
+            'baseURL' => '/admin/articles/page/',
+            'firstLink' => 'Первая',
+            'nextLink' => 'Следующая &raquo;',
+            'prevLink' => '&laquo; Предыдущая',
+            'lastLink' => 'Последняя',
+            'aTagClass' => 'class="page-link"',
+            'fullTagOpen' => '',
+            'fullTagClose' => '',
+            'firstTagOpen' => '<li class="page-item">',
+            'firstTagClose' => '</li>',
+            'lastTagOpen' => '<li class="page-item">',
+            'lastTagClose' => '</li></ul>',
+            'curTagOpen' => '<li class="active">',
+            'curTagClose' => '</li>',
+            'nextTagOpen' => '<li class="page-item">',
+            'nextTagClose' => '</li>',
+            'prevTagOpen' => '<li class="page-item">',
+            'prevTagClose' => '</li>',
+            'numTagOpen' => '<li class="page-item">',
+            'numTagClose' => '</li>',
+        ];
+
+        $this->articleService->initialize($params);
     }
 
     public function auth()
@@ -88,5 +116,27 @@ class BackController
         $user = $this->getCurentUser();
         $html = $this->View->showUserList($users, $user);
         return $this->responseWrapper($html);
+    }
+
+    // --------- Articles --------
+
+    public function showArticlesList($curentPage)
+    {
+        $title = 'Список всех статей';
+        $this->setPaginationParam();
+        $page = $this->articleService->index($curentPage);
+        echo $this->backView->showArticlesList($title, $page['articles'], $page['pagination']);
+    }
+    public function showArticleCreateForm()
+    {
+        $title = 'Новая статья';
+        $action ='/admin/article/create';
+        $article = [
+            'id'=>'',
+            'title'=>'',
+            'image'=>'',
+            'content'=>''
+        ];
+        echo $this->backView->showArticleCreateForm($title, $action, $article);
     }
 }

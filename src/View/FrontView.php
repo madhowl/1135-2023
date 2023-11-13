@@ -19,7 +19,7 @@ class FrontView
         $this->view = $view;
     }
 
-    public function showIndexPage(array $articles,$pagination =0): string
+    public function showIndexPage(array $articles, $pagination = 0): string
     {
         return $this->view->render('blog', [
             'articles' => $articles,

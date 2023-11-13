@@ -4,7 +4,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin">
+            <a class="nav-link collapsed" href="/admin/">
                 <i class="bi bi-grid"></i>
                 <span>Панель управления</span>
             </a>

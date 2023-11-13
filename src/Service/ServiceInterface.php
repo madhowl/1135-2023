@@ -12,7 +12,7 @@ interface ServiceInterface
     /**
      * Show the form for creating a new resource.
      */
-    public function create();
+    public function create(array $properties);
 
     /**
      * Store a newly created resource in storage.

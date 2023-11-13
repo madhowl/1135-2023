@@ -46,9 +46,13 @@ class ArticleService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function create()
+    public function create(array $properties): bool
     {
-        // TODO: Implement create() method.
+        $result = $this->model->insert($properties);
+        if ($result){
+            return true;
+        }
+        return false;
     }
 
     /**

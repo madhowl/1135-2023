@@ -36,5 +36,24 @@ class BackView
         return $this->view->render('pages-error-404');
     }
 
+    public function showArticlesList($title, mixed $articles, mixed $pagination)
+    {
+       return $this->view->render('articles-list', [
+           'title'=>$title,
+            'articles' => $articles,
+            'pagination' =>$pagination
+        ]);
+    }
+
+    public function showArticleCreateForm($title, $action, $article)
+    {
+        return $this->view->render('article-form', [
+            'title'=>$title,
+            'article' => $article,
+            'action' =>$action
+        ]);
+
+    }
+
 
 }

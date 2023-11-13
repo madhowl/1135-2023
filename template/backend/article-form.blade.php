@@ -1,30 +1,29 @@
-{% extends "layout.twig" %}
+@extends('layout')
+@section('title')
 
-{% block title %}
+    <li class="breadcrumb-item active">{{ $title }}</li>
+@endsection
 
-    <li class="breadcrumb-item active">{{ title }}</li>
-{% endblock %}
-
-{% block content %}
+@section('content')
 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Статья</h5>
-                        <form action="{{ action }}" method="post">
+                        <form action="{{ $action }}" method="post">
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="inputText" class="col-sm-2 col-form-label"> Заголовок </label>
-                                    <input class="form-control" type="text" name="title" value="{{ article.title }}">
+                                    <input class="form-control" type="text" name="title" value="{{ $article['title'] }}">
                                 </div>
                                 <div class="col-12">
                                     <label for="inputText" class="col-sm-2 col-form-label">Изоброжение</label>
-                                    <input class="form-control" type="text" name="image" value="{{ article.image }}">
+                                    <input class="form-control" type="text" name="image" value="{{ $article['image'] }}">
                                 </div>
                                 <div class="col-12">
-                                    <input type="hidden" name="id" value="{{ article.id }}">
+                                    <input type="hidden" name="id" value="{{ $article['id'] }}">
                                     <label for="inputText" class="col-sm-2 col-form-label">Изоброжение</label>
                                     <!-- TinyMCE Editor -->
                                     <textarea class="tinymce-editor " name="content">
-                            {{ article.content }}
+                            {{ $article['content'] }}
                         </textarea><!-- End TinyMCE Editor -->
                                 </div>
                             </div>
@@ -35,4 +34,4 @@
                         </form>
                     </div>
                 </div>
-{% endblock %}
+@endsection
