@@ -21,7 +21,7 @@ class ArticleModel extends CoreModel implements ModelInterface
         $this->setTable('articles');
     }
 
-    public function paginate(int $limit, int $offset)
+    public function paginate(int $limit, int $offset): array
     {
         return $result = $this->db->from($this->table)
             //->orderBy('name')

@@ -74,6 +74,7 @@ class BackController
         } else {
             if ($this->checkLogin($_POST['username'], $_POST['password'])) {
                 $this->signIn('admin', 1);
+                $this->setMessage('Привет $username');
             }
             h::goUrl('/admin/');
         }
@@ -102,7 +103,8 @@ class BackController
     public function showDashboard()
     {
         $title = 'Панель управления';
-        echo $this->backView->index($title);
+        $message = $this->getMessage();
+        echo $this->backView->index($title, $message);
     }
 
     public function showLoginForm()
@@ -120,13 +122,35 @@ class BackController
 
     // --------- Articles --------
 
-    public function showArticlesList($curentPage)
+    public function showArticlesList($currentPage=1)
     {
         $title = 'Список всех статей';
         $this->setPaginationParam();
-        $page = $this->articleService->index($curentPage);
+        $page = $this->articleService->index($currentPage);
         echo $this->backView->showArticlesList($title, $page['articles'], $page['pagination']);
     }
+
+    public function setMessage($message, $title ='', $color = 'green', $position = 'topRight' )
+    {
+        $_SESSION['message'] =
+            [
+                'color'=>$color,
+                'title'=>$title,
+                'message'=>$message,
+                'position'=>$position
+            ];
+    }
+
+    public function getMessage()
+    {
+        $message = null;
+        if (isset($_SESSION['message'])){
+            $message = $_SESSION['message'];
+            unset($_SESSION['message']);
+        }
+        return $message;
+    }
+
     public function showArticleCreateForm()
     {
         $title = 'Новая статья';

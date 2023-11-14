@@ -26,6 +26,9 @@
     <link href="/assets/backend/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="/assets/backend/vendor/simple-datatables/style.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="/assets/backend/vendor/izitoast/css/iziToast.min.css">
+
+
     <!-- Template Main CSS File -->
     <link href="/assets/backend/css/style.css" rel="stylesheet">
 
@@ -128,8 +131,31 @@
 <script src="/assets/backend/vendor/tinymce/tinymce.min.js"></script>
 <script src="/assets/backend/vendor/php-email-form/validate.js"></script>
 
+<script src="/assets/backend/vendor/izitoast/js/iziToast.min.js" type="text/javascript"></script>
+
 <!-- Template Main JS File -->
 <script src="/assets/backend/js/main.js"></script>
+@if ($message) <> [])
+
+
+<script>
+    iziToast.show({
+        theme: 'light',
+        icon: '', //'bi bi-emoji-smile-fill',
+        iconUrl:'',//'/assets/backend/img/message/sick3.gif',
+        color: 'green',
+        timeout: 4000,
+        image: '/assets/backend/img/message/sick3.gif',
+        title: 'Hey',
+        message: '{{$message['message']}}',
+        position: '{{$message['position']}}', //center, bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+        progressBarColor: 'rgb(0, 255, 184)'
+    });
+
+</script>
+@endif
+@yield('script')
+
 
 </body>
 

@@ -21,9 +21,9 @@ class BackView
         $this->view = $view;
     }
 
-    public function index($title): string
+    public function index($title, $message): string
     {
-        return $this->view->render('dashboard',['title'=>$title]);
+        return $this->view->render('dashboard',['title'=>$title, 'message'=>$message]);
     }
 
     public function showLoginForm(): string
@@ -41,7 +41,8 @@ class BackView
        return $this->view->render('articles-list', [
            'title'=>$title,
             'articles' => $articles,
-            'pagination' =>$pagination
+            'pagination' =>$pagination,
+           'message'=>[]
         ]);
     }
 

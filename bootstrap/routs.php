@@ -12,7 +12,7 @@ return FastRoute\simpleDispatcher(function (RouteCollector $r) {
         $r->addRoute('POST', '/login', ['App\Controller\BackController', 'showDashboard']);
         $r->addRoute('GET', '/logout', ['App\Controller\BackController', 'logout']);
         $r->addRoute('GET', '/articles', ['App\Controller\BackController', 'showArticlesList']);
-        $r->addRoute('GET', '/articles/page/{curentPage:\d+}', ['App\Controller\BackController', 'showArticlesList']);
+        $r->addRoute('GET', '/articles/page/{currentPage:\d+}', ['App\Controller\BackController', 'showArticlesList']);
         $r->addRoute('GET', '/article/create', ['App\Controller\BackController', 'showArticleCreateForm']);
 
     });
