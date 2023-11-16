@@ -42,7 +42,7 @@ class BackController
     {
          \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
         array(
-            'dirFiles' => '../img',
+            'dirFiles' => './img',
         )
     );
     }

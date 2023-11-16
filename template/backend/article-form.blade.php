@@ -45,8 +45,8 @@
             extended_valid_elements: "*[*]",
             height: "600px",
             Flmngr: {
-        apiKey: "loH0Nvby", // See in Dashboard:  https://flmngr.com/dashboard
-    },
+                apiKey: "{{ $apiKey }}", // See in Dashboard:  https://flmngr.com/dashboard
+            },
             toolbar: [
                 "cut copy | undo redo | searchreplace | bold italic strikethrough | forecolor backcolor | blockquote | removeformat | code",
                 "formatselect | link | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent"

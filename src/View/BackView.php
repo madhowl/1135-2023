@@ -11,14 +11,16 @@ use Jenssegers\Blade\Blade;
 class BackView
 {
     public Blade $view;
+    public $apiKey ;
 
     /**
      * FrontView constructor.
      * @param Blade $view
      */
-    public function __construct(Blade $view)
+    public function __construct(Blade $view ,string $apiKey)
     {
         $this->view = $view;
+        $this->apiKey = $apiKey;
     }
 
     public function index($title, $message): string
@@ -46,13 +48,14 @@ class BackView
         ]);
     }
 
-    public function showArticleCreateForm($title, $action, $article,$message =[])
+    public function showArticleCreateForm($title, $action, $article,$message =[],)
     {
         return $this->view->render('article-form', [
             'title'=>$title,
             'article' => $article,
             'action' =>$action,
-            'message' =>$message
+            'message' =>$message,
+            'apiKey' => $this->apiKey
         ]);
 
     }

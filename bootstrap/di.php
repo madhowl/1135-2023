@@ -50,7 +50,8 @@ return [
         ),
     'BackView' => create(BackView::class)
         ->constructor(
-            get('BackBlade')
+            get('BackBlade'),
+            $_ENV['FLMNGR_API_KEY']
         ),
     'ArticleService' => create(ArticleService::class)
         ->constructor(
