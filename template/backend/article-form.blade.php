@@ -86,7 +86,7 @@
             elImages.appendChild(el);
             let elImg = document.createElement("img");
             elImg.src = file.url;
-            elImg.alt = "Image selected in Flmngr";
+            elImg.alt = "";
             elImg.style = "max-width:300px";
             el.appendChild(elImg);
             let elP = document.createElement("p");
