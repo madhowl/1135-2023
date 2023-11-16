@@ -6,11 +6,13 @@ declare(strict_types=1);
 namespace App\Service;
 
 
+use App\Core\Pagination;
 use App\Model\UserModel;
 
 class UserService implements ServiceInterface
 {
-    private UserModel $model;
+    use Pagination;
+    public UserModel $model;
 
     public function __construct(UserModel $model)
     {
@@ -19,9 +21,16 @@ class UserService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function index()
+    public function index($currentPage = 1): array
     {
-        // TODO: Implement index() method.
+        $users = [];
+        $count = $this->model->count();
+        $this->totalRows = $count;
+        $this->currentPage = $currentPage;
+        $offset = ($currentPage - 1) * $this->perPage;
+        $users['users'] = $this->model->paginate($this->perPage, $offset);
+        $users['pagination'] = $this->createLinks();
+        return $users;
     }
 
     /**
@@ -45,7 +54,7 @@ class UserService implements ServiceInterface
      */
     public function show(int $id)
     {
-        // TODO: Implement show() method.
+        return $this->model->getCurentUser($id);
     }
 
     /**

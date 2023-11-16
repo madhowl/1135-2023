@@ -22,7 +22,7 @@
                                     <input type="hidden" name="id" value="{{ $article['id'] }}">
                                     <label for="inputText" class="col-sm-2 col-form-label">Изоброжение</label>
                                     <!-- TinyMCE Editor -->
-                                    <textarea class="tinymce-editor " name="content">
+                                    <textarea id="editor"  name="content">
                             {{ $article['content'] }}
                         </textarea><!-- End TinyMCE Editor -->
                                 </div>
@@ -37,4 +37,21 @@
 @endsection
 
 @section('script')
+    <script>
+        tinymce.init({
+            selector: "#editor",
+            plugins: "file-manager table link lists code fullscreen",
+            relative_urls: true,
+            extended_valid_elements: "*[*]",
+            height: "600px",
+            Flmngr: {
+        apiKey: "loH0Nvby", // See in Dashboard:  https://flmngr.com/dashboard
+    },
+            toolbar: [
+                "cut copy | undo redo | searchreplace | bold italic strikethrough | forecolor backcolor | blockquote | removeformat | code",
+                "formatselect | link | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent"
+            ],
+            promotion: false
+        });
+    </script>
 @endsection

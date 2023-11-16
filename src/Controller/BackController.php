@@ -38,6 +38,15 @@ class BackController
         }
     }
 
+    public function fileManager()
+    {
+         \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
+        array(
+            'dirFiles' => '../img',
+        )
+    );
+    }
+
     public function setPaginationParam()
     {
         $params = [
@@ -112,13 +121,6 @@ class BackController
         echo $this->backView->showLoginForm();
     }
 
-    public function showUsersList()
-    {
-        $users = $this->getAll('users');
-        $user = $this->getCurentUser();
-        $html = $this->View->showUserList($users, $user);
-        return $this->responseWrapper($html);
-    }
 
     // --------- Articles --------
 
@@ -162,5 +164,21 @@ class BackController
             'content'=>''
         ];
         echo $this->backView->showArticleCreateForm($title, $action, $article);
+    }
+
+    //  ----------- Users ---------
+
+    public function showUsersList($currentPage=1)
+    {
+        $users = $this->userService->index($currentPage);
+        $user = $this->getCurrentUser();
+        $title = 'Список всех пользователей';
+        $this->setPaginationParam();
+        echo $this->backView->showUsersList($title, $users['users'], $users['pagination']);
+    }
+
+    public function getCurrentUser(): array
+    {
+        return $this->userService->model->getCurentUser($_SESSION['user_id']);
     }
 }

@@ -19,9 +19,9 @@ class UserModel extends \App\Core\CoreModel implements ModelInterface
         $this->setTable('users');
     }
 
-    public function getCurentUser(): array
+    public function getCurentUser(int $id): array
     {
-        return $this->find($_SESSION['user_id']);
+        return $this->find($id);
     }
 
     public function getUserByEmail(string $email)
@@ -32,5 +32,16 @@ class UserModel extends \App\Core\CoreModel implements ModelInterface
             ->fetchAssoc()
             ->first();
 
+    }
+
+    public function paginate(int $limit, int $offset): array
+    {
+        return $result = $this->db->from($this->table)
+            //->orderBy('name')
+            ->limit($limit)
+            ->offset($offset)
+            ->select()
+            ->fetchAssoc()
+            ->all();
     }
 }

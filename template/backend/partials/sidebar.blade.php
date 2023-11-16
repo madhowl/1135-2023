@@ -16,6 +16,12 @@
             </a>
         </li><!-- End Articles Nav -->
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/users">
+                <i class="bi bi-person-square"></i><span>Пользователи</span>
+            </a>
+        </li><!-- End Articles Nav -->
+
     </ul>
 
 </aside><!-- End Sidebar-->

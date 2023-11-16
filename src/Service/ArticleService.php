@@ -31,13 +31,13 @@ class ArticleService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function index($curentPage = 1): array
+    public function index($currentPage = 1): array
     {
         $page = [];
         $count = $this->model->count();
         $this->totalRows = $count;
-        $this->currentPage = $curentPage;
-        $offset = ($curentPage - 1) * $this->perPage;
+        $this->currentPage = $currentPage;
+        $offset = ($currentPage - 1) * $this->perPage;
         $page['articles'] = $this->model->paginate($this->perPage, $offset);
         $page['pagination'] = $this->createLinks();
         return $page;

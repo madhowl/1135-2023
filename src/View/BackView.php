@@ -46,14 +46,28 @@ class BackView
         ]);
     }
 
-    public function showArticleCreateForm($title, $action, $article)
+    public function showArticleCreateForm($title, $action, $article,$message =[])
     {
         return $this->view->render('article-form', [
             'title'=>$title,
             'article' => $article,
-            'action' =>$action
+            'action' =>$action,
+            'message' =>$message
         ]);
 
+    }
+
+    public function showUsersList(
+        string $title,
+        mixed $users,
+        mixed $pagination
+    ) {
+        return $this->view->render('users-list', [
+            'title'=>$title,
+            'users' => $users,
+            'pagination' =>$pagination,
+            'message'=>[]
+        ]);
     }
 
 
