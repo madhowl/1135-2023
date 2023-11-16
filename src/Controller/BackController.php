@@ -11,6 +11,7 @@ use App\Helper as h;
 use App\Service\ArticleService;
 use App\Service\UserService;
 use App\View\BackView;
+use EdSDK\FlmngrServer\FlmngrServer;
 
 class BackController
 {
@@ -23,6 +24,8 @@ class BackController
     /**
      * BackController constructor.
      * @param ArticleService $articleService
+     * @param UserService $userService
+     * @param BackView $backView
      */
     public function __construct(
         ArticleService $articleService,
@@ -40,7 +43,7 @@ class BackController
 
     public function fileManager()
     {
-         \EdSDK\FlmngrServer\FlmngrServer::flmngrRequest(
+         FlmngrServer::flmngrRequest(
         array(
             'dirFiles' => './img',
         )

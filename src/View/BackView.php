@@ -11,11 +11,12 @@ use Jenssegers\Blade\Blade;
 class BackView
 {
     public Blade $view;
-    public $apiKey ;
+    public string $apiKey ;
 
     /**
      * FrontView constructor.
      * @param Blade $view
+     * @param string $apiKey
      */
     public function __construct(Blade $view ,string $apiKey)
     {
@@ -38,7 +39,7 @@ class BackView
         return $this->view->render('pages-error-404');
     }
 
-    public function showArticlesList($title, mixed $articles, mixed $pagination)
+    public function showArticlesList($title, mixed $articles, mixed $pagination): string
     {
        return $this->view->render('articles-list', [
            'title'=>$title,
@@ -48,7 +49,7 @@ class BackView
         ]);
     }
 
-    public function showArticleCreateForm($title, $action, $article,$message =[],)
+    public function showArticleCreateForm($title, $action, $article,$message =[]): string
     {
         return $this->view->render('article-form', [
             'title'=>$title,
@@ -64,7 +65,8 @@ class BackView
         string $title,
         mixed $users,
         mixed $pagination
-    ) {
+    ): string
+    {
         return $this->view->render('users-list', [
             'title'=>$title,
             'users' => $users,

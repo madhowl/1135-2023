@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 
-use App\Core\Pagination;
 use App\Service\ArticleService;
 use App\View\FrontView;
 
@@ -30,9 +29,9 @@ class FrontController
 
     }
 
-    public function showArticlesPerPage($curentPage)
+    public function showArticlesPerPage($currentPage)
     {
-        $page = $this->articleService->index($curentPage);
+        $page = $this->articleService->index($currentPage);
         echo $this->frontView->showIndexPage($page['articles'], $page['pagination']);
     }
 

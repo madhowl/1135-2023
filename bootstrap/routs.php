@@ -4,7 +4,7 @@ use FastRoute\RouteCollector;
 
 return FastRoute\simpleDispatcher(function (RouteCollector $r) {
     $r->addRoute('GET', '/', ['App\Controller\FrontController','showAllArticles']);
-    $r->addRoute('GET', '/page/{curentPage:\d+}', ['App\Controller\FrontController','showArticlesPerPage']);
+    $r->addRoute('GET', '/page/{currentPage:\d+}', ['App\Controller\FrontController','showArticlesPerPage']);
     $r->addRoute('GET', '/article/{id}', ['App\Controller\FrontController', 'showArticleById']);
     $r->addRoute('GET', '/register', ['App\Controller\FrontController', 'showRegisterForm']);
     $r->addGroup('/admin', function (RouteCollector $r) {
