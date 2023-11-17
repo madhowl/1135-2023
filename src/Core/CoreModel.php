@@ -15,6 +15,9 @@ abstract class CoreModel implements ModelInterface
     public string $table;
     protected string $primaryKey='id';
 
+    public array $fields=[];
+    public array $rules=[];
+
     /**
      * @param  string  $primaryKey
      */
@@ -73,8 +76,15 @@ abstract class CoreModel implements ModelInterface
 
     public function insert(array $properties)
     {
-        $result = $this->db->insert($properties)
+        return $this->db->insert($properties)
             ->into($this->table);
+    }
+
+    public function update(int $id, array $properties)
+    {
+        return $this->db->update($this->table)
+            ->where('id')->is($id)
+            ->set($properties);
     }
 
 }

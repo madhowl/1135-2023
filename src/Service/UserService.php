@@ -36,7 +36,7 @@ class UserService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function create($properties)
+    public function create()
     {
         // TODO: Implement create() method.
     }
@@ -44,7 +44,7 @@ class UserService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function store()
+    public function store(array $properties)
     {
         // TODO: Implement store() method.
     }
@@ -68,7 +68,7 @@ class UserService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function update(int $id)
+    public function update()
     {
         // TODO: Implement update() method.
     }

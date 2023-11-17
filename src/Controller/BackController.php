@@ -23,9 +23,10 @@ class BackController
 
     /**
      * BackController constructor.
-     * @param ArticleService $articleService
-     * @param UserService $userService
-     * @param BackView $backView
+     *
+     * @param  ArticleService  $articleService
+     * @param  UserService  $userService
+     * @param  BackView  $backView
      */
     public function __construct(
         ArticleService $articleService,
@@ -43,36 +44,36 @@ class BackController
 
     public function fileManager()
     {
-         FlmngrServer::flmngrRequest(
-        array(
-            'dirFiles' => './img',
-        )
-    );
+        FlmngrServer::flmngrRequest(
+            array(
+                'dirFiles' => './img',
+            )
+        );
     }
 
     public function setPaginationParam()
     {
         $params = [
-            'baseURL' => '/admin/articles/page/',
-            'firstLink' => 'Первая',
-            'nextLink' => 'Следующая &raquo;',
-            'prevLink' => '&laquo; Предыдущая',
-            'lastLink' => 'Последняя',
-            'aTagClass' => 'class="page-link"',
-            'fullTagOpen' => '',
-            'fullTagClose' => '',
-            'firstTagOpen' => '<li class="page-item">',
+            'baseURL'       => '/admin/articles/page/',
+            'firstLink'     => 'Первая',
+            'nextLink'      => 'Следующая &raquo;',
+            'prevLink'      => '&laquo; Предыдущая',
+            'lastLink'      => 'Последняя',
+            'aTagClass'     => 'class="page-link"',
+            'fullTagOpen'   => '',
+            'fullTagClose'  => '',
+            'firstTagOpen'  => '<li class="page-item">',
             'firstTagClose' => '</li>',
-            'lastTagOpen' => '<li class="page-item">',
-            'lastTagClose' => '</li></ul>',
-            'curTagOpen' => '<li class="active">',
-            'curTagClose' => '</li>',
-            'nextTagOpen' => '<li class="page-item">',
-            'nextTagClose' => '</li>',
-            'prevTagOpen' => '<li class="page-item">',
-            'prevTagClose' => '</li>',
-            'numTagOpen' => '<li class="page-item">',
-            'numTagClose' => '</li>',
+            'lastTagOpen'   => '<li class="page-item">',
+            'lastTagClose'  => '</li></ul>',
+            'curTagOpen'    => '<li class="active">',
+            'curTagClose'   => '</li>',
+            'nextTagOpen'   => '<li class="page-item">',
+            'nextTagClose'  => '</li>',
+            'prevTagOpen'   => '<li class="page-item">',
+            'prevTagClose'  => '</li>',
+            'numTagOpen'    => '<li class="page-item">',
+            'numTagClose'   => '</li>',
         ];
 
         $this->articleService->initialize($params);
@@ -125,59 +126,105 @@ class BackController
     }
 
 
-    // --------- Articles --------
-
-    public function showArticlesList($currentPage=1)
-    {
-        $title = 'Список всех статей';
-        $this->setPaginationParam();
-        $page = $this->articleService->index($currentPage);
-        echo $this->backView->showArticlesList($title, $page['articles'], $page['pagination']);
-    }
-
-    public function setMessage($message, $title ='', $color = 'green', $position = 'topRight' )
-    {
-        $_SESSION['message'] =
-            [
-                'color'=>$color,
-                'title'=>$title,
-                'message'=>$message,
-                'position'=>$position
-            ];
+    public function setMessage(
+        $message,
+        $title = '',
+        $color = 'green',
+        $position = 'topRight'
+    ) {
+        $_SESSION['message'] = [
+            'color'    => $color,
+            'title'    => $title,
+            'message'  => $message,
+            'position' => $position,
+        ];
     }
 
     public function getMessage()
     {
         $message = null;
-        if (isset($_SESSION['message'])){
+        if (isset($_SESSION['message'])) {
             $message = $_SESSION['message'];
             unset($_SESSION['message']);
         }
+
         return $message;
+    }
+
+    // --------- Articles --------
+
+    public function showArticlesList($currentPage = 1)
+    {
+        $title = 'Список всех статей';
+        $this->setPaginationParam();
+        $page = $this->articleService->index($currentPage);
+        $message = $this->getMessage();
+        echo $this->backView->showArticlesList(
+            $title,
+            $page['articles'],
+            $page['pagination'],
+            $message
+        );
     }
 
     public function showArticleCreateForm()
     {
         $title = 'Новая статья';
-        $action ='/admin/article/create';
+        $action = '/admin/article/create';
         $article = [
-            'id'=>'',
-            'title'=>'',
-            'image'=>'',
-            'content'=>''
+            'id'      => '',
+            'title'   => '',
+            'image'   => '',
+            'content' => '',
         ];
         echo $this->backView->showArticleCreateForm($title, $action, $article);
     }
 
+    public function createArticle()
+    {
+        $message = $this->articleService->create();
+        $this->setMessage($message);
+        h::goUrl('/admin/articles');
+    }
+
+    public function editArticle($id)
+    {
+        $id = (int)$id;
+        $message = '';
+        $article = $this->articleService->edit($id);
+        $title = 'Редактирование статьи';
+        $action = '/admin/article/update';
+        echo $this->backView->showArticleCreateForm($title, $action, $article);
+    }
+
+    public function updateArticle()
+    {
+        $message = $this->articleService->update();
+        $this->setMessage($message);
+        h::goUrl('/admin/articles');
+    }
+
+    public function deleteArticle($id)
+    {
+        $id = (int)$id;
+        $message = $this->articleService->destroy($id);
+        $this->setMessage($message);
+        h::goUrl('/admin/articles');
+    }
+
     //  ----------- Users ---------
 
-    public function showUsersList($currentPage=1)
+    public function showUsersList($currentPage = 1)
     {
         $users = $this->userService->index($currentPage);
         $user = $this->getCurrentUser();
         $title = 'Список всех пользователей';
         $this->setPaginationParam();
-        echo $this->backView->showUsersList($title, $users['users'], $users['pagination']);
+        echo $this->backView->showUsersList(
+            $title,
+            $users['users'],
+            $users['pagination']
+        );
     }
 
     public function getCurrentUser(): array

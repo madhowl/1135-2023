@@ -12,12 +12,12 @@ interface ServiceInterface
     /**
      * Show the form for creating a new resource.
      */
-    public function create(array $properties);
+    public function create();
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store();
+    public function store(array $properties);
 
     /**
      * Display the specified resource.
@@ -38,7 +38,7 @@ interface ServiceInterface
      *
      * @param int $id
      */
-    public function update(int $id);
+    public function update();
 
     /**
      * Remove the specified resource from storage.

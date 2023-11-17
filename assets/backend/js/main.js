@@ -116,9 +116,6 @@
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
 
-
-
-
   /**
    * Initiate Bootstrap validation check
    */

@@ -39,13 +39,13 @@ class BackView
         return $this->view->render('pages-error-404');
     }
 
-    public function showArticlesList($title, mixed $articles, mixed $pagination): string
+    public function showArticlesList($title, mixed $articles, mixed $pagination, $message): string
     {
        return $this->view->render('articles-list', [
            'title'=>$title,
             'articles' => $articles,
             'pagination' =>$pagination,
-           'message'=>[]
+           'message'=>$message
         ]);
     }
 

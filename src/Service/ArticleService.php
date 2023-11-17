@@ -6,10 +6,12 @@ namespace App\Service;
 
 use App\Core\Pagination;
 use App\Model\ArticleModel;
+use GUMP;
 
 
 /**
  * Class ArticleService
+ *
  * @package App\Service
  */
 class ArticleService implements ServiceInterface
@@ -20,7 +22,8 @@ class ArticleService implements ServiceInterface
 
     /**
      * ArticleService constructor.
-     * @param ArticleModel $model
+     *
+     * @param  ArticleModel  $model
      */
     public function __construct(ArticleModel $model)
     {
@@ -40,27 +43,36 @@ class ArticleService implements ServiceInterface
         $offset = ($currentPage - 1) * $this->perPage;
         $page['articles'] = $this->model->paginate($this->perPage, $offset);
         $page['pagination'] = $this->createLinks();
+
         return $page;
     }
 
     /**
      * @inheritDoc
      */
-    public function create(array $properties): bool
+    public function create(): mixed
     {
-        $result = $this->model->insert($properties);
-        if ($result){
-            return true;
+        $message = null;
+        $filtered = GUMP::filter_input($_POST, $this->model->filter);
+        unset($filtered['id']);
+        $is_valid = GUMP::is_valid($filtered, $this->model->rules);
+        if ($is_valid === true) {
+            if ($this->store($filtered) == null) {
+                $message = 'Статья добавлена';
+            }
+        } else {
+            $message = $is_valid; // array of error messages
         }
-        return false;
+
+        return $message;
     }
 
     /**
      * @inheritDoc
      */
-    public function store()
+    public function store($properties)
     {
-        // TODO: Implement store() method.
+        return $this->model->insert($properties);
     }
 
     /**
@@ -76,15 +88,29 @@ class ArticleService implements ServiceInterface
      */
     public function edit(int $id)
     {
-        // TODO: Implement edit() method.
+        return $this->model->find($id);
     }
 
     /**
      * @inheritDoc
      */
-    public function update(int $id)
+    public function update()
     {
-        // TODO: Implement update() method.
+        $message = null;
+        $filtered = GUMP::filter_input($_POST, $this->model->filter);
+        $id = (int)$filtered['id'];
+        //dd($filtered);
+        unset($filtered['id']);
+        $is_valid = GUMP::is_valid($filtered, $this->model->rules);
+        if ($is_valid === true) {
+            if ($m = $this->model->update($id, $filtered) == null) {
+                $message = 'Статья изменена';
+            }
+        } else {
+            $message = $is_valid; // array of error messages
+        }
+
+        return $message;
     }
 
     /**

@@ -5,12 +5,34 @@ namespace App\Model;
 
 
 use App\Core\CoreModel;
-use App\Model\ModelInterface;
 use Opis\Database\Database;
 
 class ArticleModel extends CoreModel implements ModelInterface
 {
 
+    public array $fields =[
+        'id',
+        'title',
+        'image',
+        'content',
+
+    ];
+
+    public array $rules =[
+//        'id'             => 'required',
+        'title'       => 'required',
+        'image'       => 'required',
+        'content'     => 'required',
+
+    ];
+
+    public array $filter=[
+        'id'          => 'whole_number',
+        'title'       => 'trim|sanitize_string',
+        'image'       => 'trim|sanitize_string',
+        'content'     => 'trim|basic_tags',
+
+    ];
 
     /**
      * ArticleModel constructor.
@@ -23,8 +45,7 @@ class ArticleModel extends CoreModel implements ModelInterface
 
     public function paginate(int $limit, int $offset): array
     {
-        return $result = $this->db->from($this->table)
-            //->orderBy('name')
+        return $this->db->from($this->table)
             ->limit($limit)
             ->offset($offset)
             ->select()
@@ -33,4 +54,6 @@ class ArticleModel extends CoreModel implements ModelInterface
 
 
     }
+
+
 }
