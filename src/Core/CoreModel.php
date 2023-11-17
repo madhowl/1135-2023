@@ -80,11 +80,17 @@ abstract class CoreModel implements ModelInterface
             ->into($this->table);
     }
 
-    public function update(int $id, array $properties)
+    public function update(int $id, array $properties): int
     {
         return $this->db->update($this->table)
             ->where('id')->is($id)
             ->set($properties);
+    }
+    public function destroy($id): int
+    {
+        return $this->db->from($this->table)
+            ->where('id')->is($id)
+            ->delete();
     }
 
 }

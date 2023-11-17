@@ -116,8 +116,15 @@ class ArticleService implements ServiceInterface
     /**
      * @inheritDoc
      */
-    public function destroy(int $id)
+    public function destroy(int $id): string
     {
-        // TODO: Implement destroy() method.
+        $message = 'error';
+        $m = $this->model->destroy($id);
+        
+        if ( $m == true) {
+            $message = 'Статья удалена';
+        }
+
+        return $message;
     }
 }

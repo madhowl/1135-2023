@@ -159,6 +159,7 @@ class BackController
         $this->setPaginationParam();
         $page = $this->articleService->index($currentPage);
         $message = $this->getMessage();
+
         echo $this->backView->showArticlesList(
             $title,
             $page['articles'],
