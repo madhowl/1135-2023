@@ -20,4 +20,10 @@ class Helper
         echo $url;
         echo '";</script>';
     }
+
+    public static function sanitize($input)
+    {
+        $allowedTags = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>";
+        return is_string($input) ? strip_tags($input, $allowedTags) : $input;
+    }
 }

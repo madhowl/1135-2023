@@ -117,6 +117,9 @@ class BackController
     {
         $title = 'Панель управления';
         $message = $this->getMessage();
+        $m = ' <script>alert( "Я JavaScript!" );</script>
+  <script src="/assets/backend/vendor/php-email-form/validate.js"></script>';
+        h::dd(h::sanitize($m));
         echo $this->backView->index($title, $message);
     }
 
