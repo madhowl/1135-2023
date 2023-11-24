@@ -1,13 +1,10 @@
 <?php
 
-
 namespace App\Service;
-
 
 use App\Core\Pagination;
 use App\Model\ArticleModel;
 use GUMP;
-
 
 /**
  * Class ArticleService
@@ -103,7 +100,7 @@ class ArticleService implements ServiceInterface
         unset($filtered['id']);
         $is_valid = GUMP::is_valid($filtered, $this->model->rules);
         if ($is_valid === true) {
-            if ($m = $this->model->update($id, $filtered) == null) {
+            if ($this->model->update($id, $filtered) == null) {
                 $message = 'Статья изменена';
             }
         } else {
@@ -120,11 +117,12 @@ class ArticleService implements ServiceInterface
     {
         $message = 'error';
         $m = $this->model->destroy($id);
-        
-        if ( $m == true) {
+
+        if ($m == true) {
             $message = 'Статья удалена';
         }
 
         return $message;
     }
+
 }

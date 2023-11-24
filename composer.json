@@ -21,7 +21,8 @@
         "symfony/var-dumper": "^6.3",
         "vlucas/phpdotenv": "^5.5",
         "edsdk/flmngr-server-php": "^1.6",
-        "wixel/gump": "^2.0"
+        "wixel/gump": "^2.0",
+        "rakit/validation": "^1.4"
     },
     "autoload": {
         "psr-4" : {
