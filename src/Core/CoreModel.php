@@ -1,22 +1,18 @@
 <?php
 
-
 namespace App\Core;
-
 
 use App\Model\ModelInterface;
 use Opis\Database\Database;
 
 abstract class CoreModel implements ModelInterface
 {
-
-
     public Database $db;
     public string $table;
-    protected string $primaryKey='id';
+    protected string $primaryKey = 'id';
 
-    public array $fields=[];
-    public array $rules=[];
+    public array $fields = [];
+    public array $rules = [];
 
     /**
      * @param  string  $primaryKey
@@ -47,6 +43,7 @@ abstract class CoreModel implements ModelInterface
     /**
      * @return string
      */
+
     public function getTable(): string
     {
         return $this->table;
@@ -86,11 +83,11 @@ abstract class CoreModel implements ModelInterface
             ->where('id')->is($id)
             ->set($properties);
     }
+
     public function destroy($id): int
     {
         return $this->db->from($this->table)
             ->where('id')->is($id)
             ->delete();
     }
-
 }

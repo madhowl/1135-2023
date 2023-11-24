@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Core\Pagination;
 use App\Model\ArticleModel;
+use Exception;
 use GUMP;
 
 /**
@@ -46,6 +47,7 @@ class ArticleService implements ServiceInterface
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function create(): mixed
     {
@@ -90,6 +92,7 @@ class ArticleService implements ServiceInterface
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function update()
     {
@@ -124,5 +127,4 @@ class ArticleService implements ServiceInterface
 
         return $message;
     }
-
 }
