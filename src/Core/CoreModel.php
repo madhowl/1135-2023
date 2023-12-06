@@ -4,7 +4,7 @@
 namespace App\Core;
 
 
-use App\Model\ModelInterface;
+use App\Interface\ModelInterface;
 use Opis\Database\Database;
 
 abstract class CoreModel implements ModelInterface

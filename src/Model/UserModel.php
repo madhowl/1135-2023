@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 
+use App\Interface\ModelInterface;
 use Opis\Database\Database;
 
 class UserModel extends \App\Core\CoreModel implements ModelInterface

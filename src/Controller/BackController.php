@@ -7,11 +7,12 @@ namespace App\Controller;
 
 
 use App\Core\Auth;
-use App\Helper as h;
+use App\Core\Helper as h;
 use App\Service\ArticleService;
 use App\Service\UserService;
 use App\View\BackView;
 use EdSDK\FlmngrServer\FlmngrServer;
+use Illuminate\View\Compilers\Concerns\CompilesHelpers;
 
 class BackController
 {

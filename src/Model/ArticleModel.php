@@ -5,6 +5,7 @@ namespace App\Model;
 
 
 use App\Core\CoreModel;
+use App\Interface\ModelInterface;
 use Opis\Database\Database;
 
 class ArticleModel extends CoreModel implements ModelInterface

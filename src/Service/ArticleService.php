@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use App\Core\Pagination;
+use App\Interface\ServiceInterface;
 use App\Model\ArticleModel;
 use GUMP;
 

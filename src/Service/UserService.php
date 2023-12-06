@@ -7,6 +7,7 @@ namespace App\Service;
 
 
 use App\Core\Pagination;
+use App\Interface\ServiceInterface;
 use App\Model\UserModel;
 
 class UserService implements ServiceInterface
