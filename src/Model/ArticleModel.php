@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Model;
-
 
 use App\Core\CoreModel;
 use App\Interface\ModelInterface;
@@ -10,37 +8,39 @@ use Opis\Database\Database;
 
 class ArticleModel extends CoreModel implements ModelInterface
 {
+    public array $fields
+        = [
+            'id',
+            'title',
+            'image',
+            'content',
 
-    public array $fields =[
-        'id',
-        'title',
-        'image',
-        'content',
+        ];
 
-    ];
-
-    public array $rules =[
+    public array $rules
+        = [
 //        'id'             => 'required',
-        'title'       => 'required',
-        'image'       => 'required',
-        'content'     => 'required',
+            'title'   => 'required',
+            'image'   => 'required',
+            'content' => 'required',
 
-    ];
+        ];
 
-    public array $filter=[
-        'id'          => 'whole_number',
-        'title'       => 'trim|sanitize_string',
-        'image'       => 'trim|sanitize_string',
-        'content'     => 'trim|basic_tags',
+    public array $filter
+        = [
+            'id'      => 'whole_number',
+            'title'   => 'trim|sanitize_string',
+            'image'   => 'trim|sanitize_string',
+            'content' => 'trim|basic_tags',
 
-    ];
+        ];
 
     /**
      * ArticleModel constructor.
      */
     public function __construct(Database $db)
     {
-        parent::__construct( $db);
+        parent::__construct($db);
         $this->setTable('articles');
     }
 
@@ -52,9 +52,5 @@ class ArticleModel extends CoreModel implements ModelInterface
             ->select()
             ->fetchAssoc()
             ->all();
-
-
     }
-
-
 }

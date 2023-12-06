@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace App\Controller;
-
 
 use App\Core\Auth;
 use App\Core\Helper as h;
@@ -118,9 +116,6 @@ class BackController
     {
         $title = 'Панель управления';
         $message = $this->getMessage();
-        $m = ' <script>alert( "Я JavaScript!" );</script>
-  <script src="/assets/backend/vendor/php-email-form/validate.js"></script>';
-        h::dd(h::sanitize($m));
         echo $this->backView->index($title, $message);
     }
 
@@ -195,7 +190,6 @@ class BackController
     public function editArticle($id)
     {
         $id = (int)$id;
-        $message = '';
         $article = $this->articleService->edit($id);
         $title = 'Редактирование статьи';
         $action = '/admin/article/update';
